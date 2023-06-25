@@ -29,6 +29,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { GoogleSignUp, SignUpBtn } from "../../components/authButton";
 import Authpage from "../../assets/images/authpage_bg.jpg";
 import { categories } from "../../model/categories";
+import { LocalSessionTracker } from "../../utility/logoutTimer";
 
 export default function SignUp() {
   const [params] = useSearchParams();
@@ -123,8 +124,12 @@ export default function SignUp() {
         autoClose: 2000,
       });
       setDialogOpen(false);
-      navigate("/");
-      return clearToken();
+      if (response.data.data.newUser.userLevel === "instructor") {
+        navigate("/dashboard/instructor/courses");
+      } else {
+        navigate("/courses");
+      }
+      return LocalSessionTracker();
     } catch (err) {
       if (err.message) {
         let errorMessage = err.message;

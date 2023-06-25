@@ -6,6 +6,7 @@ const DescriptionWrapper = styled.main`
   width: 100%;
   padding: 12px 32px;
   box-sizing: border-box;
+  padding-top: 80px;
 `;
 
 const DescriptionHeader = styled.header`
@@ -21,7 +22,7 @@ const DescriptionBrief = styled.section`
 
   ${down("lg")} {
     flex-direction: column;
-    gap: 14px;
+    gap: 24px;
   }
 `;
 
@@ -29,9 +30,9 @@ const PreviewVideo = styled.div`
   width: 55%;
   height: 400px;
 
-  ${down("md")} {
-    width: 80%;
-    height: 300px;
+  ${down("lg")} {
+    width: 100%;
+    height: 400px;
     align-self: center;
   }
 `;
@@ -52,7 +53,6 @@ const PrimaryDescription = styled.div`
 
   ${down("lg")} {
     width: 80%;
-    align-self: center;
   }
 `;
 
@@ -81,7 +81,7 @@ const PrimaryDescWrapper = styled.div`
 const PrimaryDescList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 14px;
   width: 80%;
   align-items: flex-start;
 `;
@@ -105,7 +105,6 @@ const CourseContentSection = styled.section`
   margin: 32px 0;
   display: flex;
   flex-flow: column;
-  gap: 8px;
 `;
 
 const CourseContentText = styled.div`

@@ -31,7 +31,7 @@ export default function Nav(props) {
 
   useEffect(() => {
     setUserProfile(JSON.parse(user));
-  });
+  }, []);
 
   const navigate = useNavigate();
 
@@ -42,7 +42,9 @@ export default function Nav(props) {
 
   const handleMenuSelect = (menuType) => {
     if (menuType === "profile") {
-      navigate("/profile");
+      if (userProfile.userLevel === "instructor") {
+        navigate("/dashboard/instructor/courses");
+      }
     }
 
     if (menuType === "logout") {
@@ -51,8 +53,9 @@ export default function Nav(props) {
       toast.info("Logout Succcessfull", {
         autoClose: 1000,
       });
+      setAnchorEl(null);
+      navigate("/signin")
     }
-    setAnchorEl(null);
   };
 
   const handleClose = () => {
@@ -61,7 +64,7 @@ export default function Nav(props) {
 
   const categoryChangeHandler = (event) => {
     setCategory(event.target.value);
-    navigate(`/courses?query=${searchQuery}&category=${category}`);
+    navigate(`/courses?query=${searchQuery}&category=${event.target.value}`);
   };
 
   const handleSearch = (event) => {

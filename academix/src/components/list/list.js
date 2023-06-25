@@ -1,25 +1,45 @@
-import React from "react";
-import { Typography, Rating, Skeleton, Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Typography, Rating, Skeleton, Box, Button } from "@mui/material";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 import "./listStyles.css";
+import { FaSave } from "react-icons/fa";
+import { AuthContext } from "../../App";
 
 function List(props) {
+  const { user } = useContext(AuthContext);
+  const [currentUser, setUser] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setUser(JSON.parse(user));
+  }, []);
 
   const goToDetails = (courseID) => {
     navigate(`/course-description/${courseID}`);
   };
 
-  const data = props.data?.slice(0, 9); 
+  const editCourseHandler = (ID) => {
+    navigate(`/dashboard/instructor/create-course?mode=edit&courseID=${ID}`);
+  };
+
+  const data = props.data?.slice(0, 9);
   return (
     <div className="list">
       {data
         ? data.map((item, index) => (
-            <div onClick={() => goToDetails(item._id)} className="card">
+            <div
+              key={index}
+              onClick={() => {
+                item.instructor === currentUser?.instructorID
+                  ? editCourseHandler(item._id)
+                  : goToDetails(item._id);
+              }}
+              className="card"
+            >
               <div
                 style={{
-                  height: "60%",
+                  height: "55%",
                   width: "100%",
                   backgroundSize: "cover",
                 }}
@@ -32,25 +52,62 @@ function List(props) {
                   alt="Software development"
                 />
               </div>
-              <div className="info-wrap">
+              <div
+                style={{
+                  width: "90%",
+                  paddingLeft: 10,
+                  boxSizing: "border-box",
+                }}
+              >
                 <Typography variant="body1">{item.category}</Typography>
-                <Typography variant="h6" lineHeight={1.2}>
+                <Typography
+                  variant="body1"
+                  lineHeight={1.2}
+                  maxWidth="90%"
+                  sx={{ pb: 2, WebkitLineClamp: 2 }}
+                  fontWeight={600}
+                  fontSize={16}
+                >
                   {item.title}
                 </Typography>
-                <Rating
-                  readOnly
-                  value={item.averageRateValue}
-                  precision={0.5}
-                />
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    alignSelf: "flex-start",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <Rating
+                    readOnly
+                    value={item.averageRateValue}
+                    precision={0.5}
+                  />
+                  <Typography fontWeight={600}>NGN {item.price}</Typography>
+                </div>
               </div>
+              {/* {item.instructor === currentUser?.instructorID && (
+                <div style={{ display: "flex", gap: 12 }}>
+                  {item.draft && (
+                    <Button
+                      variant="contained"
+                      sx={{ alignSelf: "flex-end" }}
+                      startIcon={<FaSave size={14} />}
+                    >
+                      Draft
+                    </Button>
+                  )}
+                </div>
+              )} */}
             </div>
           ))
-        : [..."123456789"].map((el, i) => (
+        : [..."12345678"].map((el, i) => (
             <Box
               key={i}
               sx={{
-                height: 350,
-                width: 350,
+                height: 250,
+                width: 280,
                 display: "flex",
                 flexFlow: "column",
                 pr: 2,

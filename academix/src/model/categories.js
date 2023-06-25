@@ -1,8 +1,9 @@
 export const categories = [
+  "All Courses",
   "Web Development",
   "Business",
   "Finance",
-  "IT & Software",
+  "IT and Software",
   "Office Productivity",
   "Office Development",
   "Design",
@@ -16,3 +17,5 @@ export const categories = [
   "Relationship",
   "Branding",
 ];
+
+export const intendedLearners = ["Beginner", "Intermediate", "Advanced", "Any"];

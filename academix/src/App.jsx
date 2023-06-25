@@ -1,10 +1,11 @@
 import React, { createContext, useEffect, useState } from "react";
 import { CssBaseline, ThemeProvider as MUIThemeProvider } from "@mui/material";
+import { ProSidebarProvider } from "react-pro-sidebar";
 
 import theme from "./styles/theme";
 
-import { RouterProvider } from "react-router-dom";
-import router from "./Router";
+import AppRoutes from "./Router";
+import { timer } from "./utility/logoutTimer";
 
 export const AuthContext = createContext(null);
 
@@ -12,12 +13,11 @@ const App = () => {
   const [token, setToken] = useState();
   const [user, setUser] = useState();
 
+  setInterval(() => {
+    timer()
+  }, 1000);
+
   useEffect(() => {
-    const expiresIn = localStorage.getItem("expiresIn");
-    // if (expiresIn > new Date().getUTCDate()) {
-    //   localStorage.clear("token");
-    //   localStorage.clear("expiresIn");
-    // }
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
     setUser(user);
@@ -26,13 +26,17 @@ const App = () => {
 
   return (
     <React.StrictMode>
-      <MUIThemeProvider theme={theme}>
-        <CssBaseline>
-          <AuthContext.Provider value={{ token, setToken, user, setUser }}>
-            <RouterProvider router={router} />
-          </AuthContext.Provider>
-        </CssBaseline>
-      </MUIThemeProvider>
+      <ProSidebarProvider>
+        <MUIThemeProvider theme={theme}>
+          <CssBaseline>
+            <AuthContext.Provider
+              value={{ token, setToken, user, setUser }}
+            >
+              <AppRoutes />
+            </AuthContext.Provider>
+          </CssBaseline>
+        </MUIThemeProvider>
+      </ProSidebarProvider>
     </React.StrictMode>
   );
 };
